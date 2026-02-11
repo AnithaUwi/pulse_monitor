@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  monitors  Monitor[]
+}
+
+model Monitor {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  name        String
+  url         String
+  type        String      @default("http") // http, ping, port
+  interval    Int         @default(60) // seconds
+  status      String      @default("active") // active, paused, down
+  createdAt   DateTime    @default(now())
+  
+  user        User        @relation(fields: [userId], references: [id])
+  heartbeats  Heartbeat[]
+  incidents   Incident[]
+}
+
+model Heartbeat {
+  id        Int      @id @default(autoincrement())
+  monitorId Int
+  status    String   // up, down
+  latency   Int      // ms
+  timestamp DateTime @default(now())
+
+  monitor   Monitor  @relation(fields: [monitorId], references: [id])
+}
+
+model Incident {
+  id          Int      @id @default(autoincrement())
+  monitorId   Int
+  start       DateTime @default(now())
+  end         DateTime?
+  reason      String?
+
+  monitor     Monitor  @relation(fields: [monitorId], references: [id])
+}
