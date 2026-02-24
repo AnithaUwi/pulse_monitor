@@ -2,7 +2,7 @@
 
 Advanced uptime and service monitoring application. PulseMonitor helps you track the reliability of your websites and services with real-time alerts and high-fidelity incident logging.
 
-![PulseMonitor Dashboard](/pulse-banner.png)
+
 
 ## Features
 
