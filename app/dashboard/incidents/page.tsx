@@ -94,49 +94,51 @@ export default function IncidentsPage() {
 
   return (
     <div className="min-h-screen bg-[#0d1117] text-gray-300">
-      <div className="px-8 py-10 max-w-[1400px] mx-auto">
+      <div className="px-4 md:px-8 py-6 md:py-10 max-w-[1400px] mx-auto">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <h1 className="text-3xl font-bold text-white flex items-center">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-white flex items-center">
             Incidents<span className="text-primary font-black">.</span>
           </h1>
 
-          <div className="flex items-center gap-2">
-            <div className="relative group">
+          <div className="flex flex-wrap items-center gap-2 md:gap-3">
+            <div className="relative group w-full md:w-auto">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-white transition-colors" />
               <input
                 type="text"
-                placeholder="Search by name or url"
+                placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-[#161b22] border border-gray-800 rounded-md pl-10 pr-4 py-2 text-sm w-72 focus:outline-none focus:border-gray-600 transition-all placeholder:text-gray-600"
+                className="bg-[#161b22] border border-gray-800 rounded-md pl-10 pr-4 py-2 text-sm w-full md:w-64 focus:outline-none focus:border-gray-600 transition-all placeholder:text-gray-600"
               />
             </div>
 
-            <button className="flex items-center gap-2 bg-[#161b22] border border-gray-800 px-3 py-2 rounded-md text-sm hover:bg-[#1f2937] transition-colors">
-              <span className="text-gray-400"><Clock className="w-4 h-4" /></span>
-              All tags
-              <ChevronDown className="w-4 h-4 text-gray-500" />
-            </button>
+            <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+              <button className="flex items-center gap-2 bg-[#161b22] border border-gray-800 px-3 py-2 rounded-md text-sm hover:bg-[#1f2937] transition-colors whitespace-nowrap">
+                <span className="text-gray-400"><Clock className="w-4 h-4" /></span>
+                All tags
+                <ChevronDown className="w-4 h-4 text-gray-500" />
+              </button>
 
-            <button className="flex items-center gap-2 bg-[#161b22] border border-gray-800 px-3 py-2 rounded-md text-sm hover:bg-[#1f2937] transition-colors">
-              Started - Newest
-              <ChevronDown className="w-4 h-4 text-gray-500" />
-            </button>
+              <button className="flex items-center gap-2 bg-[#161b22] border border-gray-800 px-3 py-2 rounded-md text-sm hover:bg-[#1f2937] transition-colors whitespace-nowrap">
+                Started
+                <ChevronDown className="w-4 h-4 text-gray-500" />
+              </button>
 
-            <button className="flex items-center gap-2 bg-[#161b22] border border-gray-800 px-3 py-2 rounded-md text-sm hover:bg-[#1f2937] transition-colors">
-              <Filter className="w-4 h-4 text-gray-500" />
-              Filter
-            </button>
+              <button className="flex items-center gap-2 bg-[#161b22] border border-gray-800 px-3 py-2 rounded-md text-sm hover:bg-[#1f2937] transition-colors whitespace-nowrap">
+                <Filter className="w-4 h-4 text-gray-500" />
+                Filter
+              </button>
 
-            <button className="flex items-center justify-center p-2 bg-[#161b22] border border-gray-800 rounded-md hover:bg-[#1f2937] transition-colors">
-              <Share2 className="w-4 h-4 text-gray-500" />
-            </button>
+              <button className="flex items-center justify-center p-2 bg-[#161b22] border border-gray-800 rounded-md hover:bg-[#1f2937] transition-colors">
+                <Share2 className="w-4 h-4 text-gray-500" />
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Table Section */}
-        <div className="rounded-xl border border-gray-800 bg-[#0d1117] overflow-hidden">
+        {/* Table Section - Desktop */}
+        <div className="hidden lg:block rounded-xl border border-gray-800 bg-[#0d1117] overflow-hidden">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="text-[11px] uppercase tracking-wider text-gray-500 border-b border-gray-800 font-semibold">
@@ -202,63 +204,121 @@ export default function IncidentsPage() {
                   </td>
                 </tr>
               ))}
-              {filteredIncidents.length === 0 && (
-                <tr>
-                  <td colSpan={8} className="px-6 py-20 text-center text-gray-500">
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="p-4 bg-gray-800/20 rounded-full">
-                        <Filter className="w-8 h-8 opacity-20" />
-                      </div>
-                      <p>No incidents found matching your criteria.</p>
-                    </div>
-                  </td>
-                </tr>
-              )}
             </tbody>
           </table>
         </div>
 
+        {/* Card Section - Mobile */}
+        <div className="lg:hidden space-y-4">
+          {filteredIncidents.map((incident) => (
+            <div key={incident.id} className="bg-[#161b22] border border-gray-800 rounded-xl p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {incident.end ? (
+                    <div className="flex items-center gap-1.5 text-green-500 font-semibold text-xs uppercase tracking-tight">
+                      <BadgeCheck className="w-3.5 h-3.5" />
+                      Resolved
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1.5 text-red-500 font-semibold text-xs uppercase tracking-tight">
+                      <XCircle className="w-3.5 h-3.5 animate-pulse" />
+                      Active
+                    </div>
+                  )}
+                </div>
+                <span className="text-[10px] text-gray-500 font-mono">#{incident.id}</span>
+              </div>
+
+              <div>
+                <h3 className="text-gray-200 font-bold text-base mb-1">
+                  {incident.monitor?.name || `Monitor #${incident.monitorId}`}
+                </h3>
+                <p className="text-xs text-gray-500 truncate">{incident.monitor?.url}</p>
+              </div>
+
+              <div className="flex items-center gap-3 bg-[#0d1117] p-3 rounded-lg border border-gray-800/50">
+                <span className="inline-flex items-center justify-center bg-[#b91c1c] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm min-w-[32px]">
+                  {getRootCauseCode(incident.reason)}
+                </span>
+                <span className="text-xs text-gray-400 font-medium">
+                  {getRootCauseText(incident.reason)}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 pt-2 border-t border-gray-800/50">
+                <div>
+                  <div className="text-[10px] uppercase text-gray-600 font-bold mb-1">Started</div>
+                  <div className="text-[11px] text-gray-400">{formatDate(incident.start).replace(/ GMT\+2$/, '')}</div>
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase text-gray-600 font-bold mb-1">Duration</div>
+                  <div className="text-[11px] text-gray-200 font-mono">
+                    {incident.end ? formatDuration(incident.start, incident.end) : "Ongoing"}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Empty State */}
+        {filteredIncidents.length === 0 && (
+          <div className="px-6 py-20 text-center text-gray-500 bg-[#161b22]/30 rounded-xl border border-dashed border-gray-800">
+            <div className="flex flex-col items-center gap-2">
+              <div className="p-4 bg-gray-800/20 rounded-full">
+                <Filter className="w-8 h-8 opacity-20" />
+              </div>
+              <p className="font-medium">No incidents found matching your criteria.</p>
+            </div>
+          </div>
+        )}
+
         {/* Pagination Section */}
         {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-8">
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={page === 1}
-              onClick={() => setPage(p => Math.max(1, p - 1))}
-              className="bg-[#161b22] border-gray-800 hover:bg-[#1f2937] text-xs h-8"
-            >
-              Previous
-            </Button>
-            <div className="flex gap-1">
-              {Array.from({ length: totalPages }, (_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setPage(i + 1)}
-                  className={`w-8 h-8 rounded text-xs transition-colors ${page === i + 1
-                    ? 'bg-primary text-white font-bold'
-                    : 'bg-[#161b22] border border-gray-800 text-gray-500 hover:border-gray-600'
-                    }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-8">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page === 1}
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                className="bg-[#161b22] border-gray-800 hover:bg-[#1f2937] text-xs h-8"
+              >
+                Previous
+              </Button>
+              <div className="flex gap-1 overflow-x-auto max-w-[200px] md:max-w-none scrollbar-hide py-1">
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setPage(i + 1)}
+                    className={`min-w-[32px] h-8 rounded text-xs transition-colors shrink-0 ${page === i + 1
+                      ? 'bg-primary text-white font-bold'
+                      : 'bg-[#161b22] border border-gray-800 text-gray-500 hover:border-gray-600'
+                      }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page === totalPages}
+                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                className="bg-[#161b22] border-gray-800 hover:bg-[#1f2937] text-xs h-8"
+              >
+                Next
+              </Button>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={page === totalPages}
-              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-              className="bg-[#161b22] border-gray-800 hover:bg-[#1f2937] text-xs h-8"
-            >
-              Next
-            </Button>
+            <span className="text-[10px] text-gray-600 uppercase font-bold tracking-widest">
+              Page {page} of {totalPages}
+            </span>
           </div>
         )}
       </div>
 
       {/* Floating Chat Button (Mock) */}
-      <button className="fixed bottom-6 right-6 p-4 bg-[#161b22] border border-gray-800 rounded-2xl shadow-2xl hover:bg-[#1f2937] transition-all group">
+      <button className="fixed bottom-6 right-6 p-4 bg-[#161b22] border border-gray-800 rounded-2xl shadow-2xl hover:bg-[#1f2937] transition-all group z-50">
         <MessageSquare className="w-6 h-6 text-white" />
         <div className="absolute top-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0d1117]" />
       </button>
