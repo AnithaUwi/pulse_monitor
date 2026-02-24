@@ -11,7 +11,7 @@ export default function NewMonitorPage() {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
 
-    // Using native select for simplicity unless I create a complex select component
+
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()

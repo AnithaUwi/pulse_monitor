@@ -1,16 +1,9 @@
 import { Header } from '@/components/header'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import prisma from '@/lib/prisma'
 import { getSession } from '@/lib/session'
 import { Activity, ArrowDown, ArrowUp, AlertCircle, PlayCircle, PauseCircle } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-
-// Quick inline Card components if we don't have them yet, or import from ui
-// Since I haven't created components/ui/card.tsx yet, I'll implement a simple one here or mock it.
-// Better to create the file `components/ui/card.tsx` in a separate step, but I'll assume I can just use div classes for now to be safe and fast.
-// actually, I should create card.tsx, it's standard. I'll do it in the next turn. 
-// For now, I'll use standard HTML/Tailwind in this file.
 
 async function getStats(userId: number) {
     const monitors = await prisma.monitor.findMany({
@@ -18,18 +11,9 @@ async function getStats(userId: number) {
     })
 
     const total = monitors.length
-    const up = monitors.filter(m => m.status === 'active').length // assuming active means checking, but we also need "up" status from heartbeats? 
-    // Wait, schema has `status` on Monitor as 'active', 'paused', 'down'.
-    // Let's stick to that.
+    const up = monitors.filter(m => m.status === 'active').length
     const down = monitors.filter(m => m.status === 'down').length
     const paused = monitors.filter(m => m.status === 'paused').length
-
-    // 'active' in schema might just mean "enabled". 
-    // Usually we have `status` (up/down) and `state` (active/paused).
-    // My schema has: `status String @default("active") // active, paused, down`.
-    // This mixes configuration and health. 
-    // I should probably have used: `isActive Boolean` and `lastStatus String`.
-    // But for now, let's assume 'active' = UP, 'down' = DOWN, 'paused' = PAUSED.
 
     return { total, up: monitors.filter(m => m.status === 'active').length, down, paused }
 }

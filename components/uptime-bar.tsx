@@ -8,32 +8,13 @@ interface UptimeBarProps {
 }
 
 export function UptimeBar({ heartbeats, maxBars = 30 }: UptimeBarProps) {
-    // We need to fill the bars. If we have fewer heartbeats than maxBars, we pad with "empty" (gray)
-    // If we have more, we take the last maxBars.
-
-    const recentHeartbeats = heartbeats.slice(0, maxBars).reverse() // Assuming API returns desc
-    // Actually usually API returns desc, so slice 0-30 are the latest. 
-    // We want to render them Left-to-Right as Oldest-to-Newest? 
-    // UptimeRobot usually shows latest on the right.
-    // So if we have [newest, ..., oldest], we should reverse it for display: [oldest, ..., newest]
+    const recentHeartbeats = heartbeats.slice(0, maxBars)
 
     const totalSlots = maxBars
     const filledSlots = recentHeartbeats.length
     const emptySlots = totalSlots - filledSlots
 
-    // Create an array representing the visualization
-    // We want the latest check to be at the very end (right).
-    const bars = []
-
-    // Add empty slots (older times where we have no data)
-    for (let i = 0; i < emptySlots; i++) {
-        bars.push('empty')
-    }
-
-    // Add actual heartbeats (oldest to newest)
-    // recentHeartbeats is currently [Newest, ..., Oldest] if fetched desc.
-    // Let's verify data fetching order later, but usually standard is DESC for history.
-    // So we spread the reversed array.
+    const bars = Array(emptySlots).fill('empty')
     const displayHeartbeats = [...recentHeartbeats].reverse()
 
     return (

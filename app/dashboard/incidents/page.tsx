@@ -74,7 +74,7 @@ export default function IncidentsPage() {
       minute: '2-digit',
       second: '2-digit',
       hour12: false
-    }) + " GMT+2"; // Hardcoding GMT+2 to match screenshot style, though usually dynamic
+    }) + " GMT+2";
   }
 
   function getRootCauseCode(reason: string) {

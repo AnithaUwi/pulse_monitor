@@ -5,8 +5,6 @@ export function StatsSidebar({ monitors }: { monitors: any[] }) {
     const paused = monitors.filter(m => m.status === 'paused').length
     const pending = monitors.filter(m => m.status === 'pending').length
 
-    // Calculate overall uptime (mock logic for now, or simple average)
-    // For MVP: based on current status count
     const upPercent = total > 0 ? ((up / total) * 100).toFixed(3) : '0.000'
 
     return (
