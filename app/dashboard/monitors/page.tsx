@@ -1,5 +1,6 @@
-
 import { getSession } from '@/lib/session';
+import prisma from '@/lib/prisma';
+import { redirect } from 'next/navigation';
 import MonitorsClient from './MonitorsClient'
 
 export default async function MonitorsPage() {
