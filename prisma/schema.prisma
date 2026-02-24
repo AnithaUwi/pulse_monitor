@@ -21,6 +21,7 @@ model Monitor {
   name        String
   url         String
   type        String      @default("http") // http, ping, port
+  keyword     String?     // Optional: Text to match in response body
   interval    Int         @default(60) // seconds
   status      String      @default("active") // active, paused, down
   createdAt   DateTime    @default(now())

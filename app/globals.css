@@ -1,26 +1,92 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
+
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Explicit Dark Blue & Green Theme */
+
+    /* Background: Deep Navy Blue */
+    --background: #0b1120;
+    /* Foreground: White */
+    --foreground: #ffffff;
+
+    /* Card: Slightly lighter blue */
+    --card: #151e32;
+    --card-foreground: #ffffff;
+
+    /* Popover matches card */
+    --popover: #151e32;
+    --popover-foreground: #ffffff;
+
+    /* Primary: Vibrant Green */
+    --primary: #10b981;
+    --primary-foreground: #ffffff;
+
+    /* Secondary: Muted Blue/Grey */
+    --secondary: #334155;
+    --secondary-foreground: #ffffff;
+
+    /* Muted text - lighter for better contrast */
+    --muted: #334155;
+    --muted-foreground: #cbd5e1;
+
+    /* Accent: Hover state info */
+    --accent: #1e293b;
+    --accent-foreground: #ffffff;
+
+    /* Destructive: Red */
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+
+    /* Borders: Darker line */
+    --border: #1e293b;
+    --input: #1e293b;
+    --ring: #10b981;
+
+    --radius: 0.5rem;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
 }
